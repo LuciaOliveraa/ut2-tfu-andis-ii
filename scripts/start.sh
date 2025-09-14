@@ -45,19 +45,38 @@ check_docker() {
 # Verificar recursos del sistema
 check_system_resources() {
     log "Verificando recursos del sistema..."
-    
+
+    # Detectar sistema operativo
+    unameOut="$(uname -s)"
+    case "${unameOut}" in
+        Linux*)     os=Linux;;
+        Darwin*)    os=Mac;;
+        *)          os="UNKNOWN";;
+    esac
+
     # Verificar memoria disponible (mínimo 1GB)
-    available_mem=$(free -m | awk 'NR==2{printf "%.1f", $7/1024}')
+    if [ "$os" = "Mac" ]; then
+        # macOS: memoria libre = (memoria libre + memoria inactiva) en GB
+        mem_free=$(vm_stat | awk '/Pages free/ {free=$3} /Pages inactive/ {inactive=$3} END {print (free+inactive)*4096/1024/1024/1024}')
+        available_mem=$(printf "%.1f" "$mem_free")
+    else
+        # Linux
+        available_mem=$(free -m | awk 'NR==2{printf "%.1f", $7/1024}')
+    fi
     if (( $(echo "$available_mem < 1.0" | bc -l) )); then
         warn "Memoria disponible baja: ${available_mem}GB. Se recomienda al menos 1GB."
     fi
-    
+
     # Verificar espacio en disco (mínimo 2GB)
-    available_disk=$(df -BG . | awk 'NR==2 {print $4}' | sed 's/G//')
+    if [ "$os" = "Mac" ]; then
+        available_disk=$(df -g . | awk 'NR==2 {print $4}')
+    else
+        available_disk=$(df -BG . | awk 'NR==2 {print $4}' | sed 's/G//')
+    fi
     if [[ $available_disk -lt 2 ]]; then
         warn "Espacio en disco bajo: ${available_disk}GB. Se recomienda al menos 2GB."
     fi
-    
+
     log "Recursos del sistema verificados ✓"
 }
 
@@ -171,7 +190,7 @@ main() {
 }
 
 # Manejo de señales para limpieza
-trap cleanup EXIT
+trap cleanup INT TERM
 
 # Ejecutar función principal
 main "$@"
