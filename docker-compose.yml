@@ -98,18 +98,6 @@ services:
       timeout: 10s
       retries: 3
 
-  # Servicio de monitoreo (opcional)
-  monitoring:
-    image: nginx:alpine
-    container_name: orders-monitoring
-    ports:
-      - "8081:80"
-    volumes:
-      - ./monitoring.html:/usr/share/nginx/html/index.html:ro
-    networks:
-      - orders-network
-    restart: unless-stopped
-
 networks:
   orders-network:
     driver: bridge
