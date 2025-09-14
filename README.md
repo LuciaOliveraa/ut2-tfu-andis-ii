@@ -2,15 +2,15 @@
 
 Sistema completo de gestión de pedidos con alta disponibilidad, autenticación JWT, rate limiting y replicación con Docker Compose.
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ### Tácticas de Arquitectura Implementadas:
 
-1. **🔄 Replicación**: 3 instancias de la API con balanceador de carga NGINX
-2. **🔁 Reintentos**: Mecanismos automáticos ante fallos con backoff exponencial  
-3. **🔐 Autenticación**: Sistema JWT con invalidación de tokens
-4. **🛡️ Rate Limiting**: Protección contra abuso por usuario/IP con Redis
-5. **📊 Monitoreo**: Health checks y estadísticas del sistema
+1. **Replicación**: 3 instancias de la API con balanceador de carga NGINX
+2. **eintentos**: Mecanismos automáticos ante fallos con backoff exponencial  
+3. **Autenticación**: Sistema JWT con invalidación de tokens
+4. **Rate Limiting**: Protección contra abuso por usuario/IP con Redis
+5. **Monitoreo**: Health checks y estadisticas
 
 ### Stack Tecnológico:
 - **Backend**: Python 3.11 + Flask
@@ -89,10 +89,9 @@ REDIS_URL=redis://redis:6379
 
 ### Puertos
 - **8080**: Load Balancer (NGINX)
-- **8081**: Dashboard de monitoreo
 - **6379**: Redis (interno)
 
-## 📚 Ejemplos de Uso
+## Ejemplos de Uso
 
 ### Autenticación Completa
 ```bash
@@ -148,7 +147,7 @@ curl -X PUT http://localhost:8080/api/orders/ORD-000001 \
   -d '{"status": "shipped"}'
 ```
 
-## 🔄 Replicación y Alta Disponibilidad
+## Replicación y Alta Disponibilidad
 
 ### Arquitectura de Replicación
 ```
@@ -169,7 +168,7 @@ for i in {1..5}; do
 done
 ```
 
-## 🔁 Mecanismos de Reintentos
+## Mecanismos de Reintentos
 
 ### 1. Nivel NGINX (Load Balancer)
 ```nginx
@@ -194,7 +193,7 @@ healthcheck:
   retries: 3
 ```
 
-## 🛡️ Seguridad y Rate Limiting
+## Seguridad y Rate Limiting
 
 ### Autenticación JWT
 - Tokens válidos por 1 hora
@@ -220,7 +219,7 @@ for i in {1..15}; do
 done
 ```
 
-## 📊 Monitoreo y Observabilidad
+## Monitoreo y Observabilidad
 
 ### Health Checks
 ```bash
@@ -235,17 +234,12 @@ curl -H "Authorization: Bearer $TOKEN" \
   http://localhost:8080/api/stats | jq .
 ```
 
-### Dashboard Web
-- **Sistema**: http://localhost:8080
-- **Monitoreo**: http://localhost:8081
-
 ## 🐳 Configuración de Docker
 
 ### Servicios
 1. **nginx**: Load Balancer (puerto 8080)
 2. **api-1, api-2, api-3**: Instancias de la API
 3. **redis**: Cache y rate limiting
-4. **monitoring**: Dashboard opcional
 
 ### Comandos Útiles
 ```bash
@@ -265,19 +259,19 @@ docker compose down
 docker compose up -d --build
 ```
 
-## 🧪 Testing y Demostración
+## Testing y Demostración
 
 ### Demo Automática
 ```bash
 ./scripts/demo.sh
 ```
 La demo ejecuta:
-- ✅ Verificación de health checks
-- ✅ Registro y autenticación de usuarios  
-- ✅ CRUD completo de pedidos
-- ✅ Activación de rate limiting
-- ✅ Verificación de replicación
-- ✅ Pruebas de manejo de errores
+- Verificación de health checks
+- Registro y autenticación de usuarios  
+- CRUD completo de pedidos
+- Activación de rate limiting
+- Verificación de replicación
+- Pruebas de manejo de errores
 
 ### Ejemplos Manuales
 ```bash
@@ -297,7 +291,7 @@ curl http://localhost:8080/api/health
 docker start orders-api-1
 ```
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 ANDISII_TFU_UT2/
@@ -369,56 +363,3 @@ docker-compose logs -f api-1
 docker-compose exec api-1 bash
 docker-compose exec redis redis-cli
 ```
-
-## 📈 Escalabilidad y Producción
-
-### Escalado Horizontal
-```bash
-# Aumentar instancias de la API
-docker-compose up -d --scale api=5
-
-# Verificar distribución
-docker-compose ps
-```
-
-### Configuración para Producción
-1. **Cambiar JWT_SECRET_KEY** a un valor seguro
-2. **Configurar HTTPS** en NGINX
-3. **Usar base de datos persistente** (PostgreSQL, MySQL)
-4. **Implementar logging centralizado** (ELK Stack)
-5. **Agregar métricas** (Prometheus, Grafana)
-
-### Optimizaciones
-- Conexión pool para Redis
-- Cache de respuestas frecuentes  
-- Compresión gzip en NGINX
-- Rate limiting más granular
-- Monitoreo de métricas de negocio
-
-## 🤝 Contribución
-
-1. Fork del repositorio
-2. Crear branch para feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit de cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push al branch (`git push origin feature/nueva-funcionalidad`)  
-5. Crear Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
----
-
-**🎯 Estado**: ✅ Completamente funcional con todas las características solicitadas
-
-**🚀 Funcionalidades**:
-- ✅ API REST completa (CRUD pedidos)
-- ✅ Replicación con Docker Compose (3 instancias)
-- ✅ Reintentos automáticos ante fallos
-- ✅ Autenticación JWT completa
-- ✅ Rate limiting por usuario/IP
-- ✅ Load balancing con NGINX
-- ✅ Health checks y monitoreo
-- ✅ Scripts de inicio y demo
-- ✅ Ejemplos de curl comprensivos
-- ✅ Documentación detallada
