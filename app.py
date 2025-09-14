@@ -55,7 +55,7 @@ except Exception as e:
 # Configuración del limitador de velocidad
 limiter = Limiter(
     app=app,
-    key_func=lambda: get_jwt_identity() or get_remote_address(),
+    key_func=lambda: get_remote_address(),
     storage_uri=app.config['REDIS_URL'] if redis_client else "memory://",
     default_limits=["200 per day", "50 per hour"]
 )
