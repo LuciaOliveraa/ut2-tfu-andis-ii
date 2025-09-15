@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-"""
-Flask REST API para gestión de pedidos en línea
-Implementa:
-- CRUD de pedidos (crear, listar, consultar por ID)
-- Autenticación por token JWT
-- Rate limiting por usuario
-- Reintentos automáticos ante fallos
-- Replicación con Docker Compose
-"""
 
 import os
 import time
