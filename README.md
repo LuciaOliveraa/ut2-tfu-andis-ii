@@ -6,11 +6,10 @@ Sistema completo de gestión de pedidos con alta disponibilidad, autenticación 
 
 ### Tácticas de Arquitectura Implementadas:
 
-1. **Replicación**: 3 instancias de la API con balanceador de carga NGINX
-2. **eintentos**: Mecanismos automáticos ante fallos con backoff exponencial  
-3. **Autenticación**: Sistema JWT con invalidación de tokens
-4. **Rate Limiting**: Protección contra abuso por usuario/IP con Redis
-5. **Monitoreo**: Health checks y estadisticas
+1. **Disponibilidad - Replicación**: 3 instancias de la API con balanceador de carga NGINX
+2. **Disponibilidad - Reintentos**: Mecanismos automáticos ante fallos con backoff exponencial  
+3. **Seguridad - Autenticación de actores**: Sistema JWT con invalidación de tokens
+4. **Seguridad - Limitar el acceso**: Protección contra abuso por usuario/IP con Redis
 
 ### Stack Tecnológico:
 - **Backend**: Python 3.11 + Flask
@@ -20,7 +19,7 @@ Sistema completo de gestión de pedidos con alta disponibilidad, autenticación 
 - **Contenedores**: Docker + Docker Compose
 - **Persistencia**: Redis (rate limiting) + In-memory (datos)
 
-## 🚀 Inicio Rápido
+## Inicio Rápido
 
 ### Prerequisitos
 - Docker y Docker Compose instalados
@@ -40,18 +39,9 @@ cd ANDISII_TFU_UT2
 ```bash
 # Health check
 curl http://localhost:8080/api/health
-
-# Interfaz web informativa  
-open http://localhost:8080
 ```
 
-### 3. Ejecutar Demostración Completa
-```bash
-# Demo interactiva con todas las funcionalidades
-./scripts/demo.sh
-```
-
-## 📡 Endpoints de la API
+##  Endpoints de la API
 
 ### Autenticación
 | Método | Endpoint | Descripción | Rate Limit |
@@ -74,7 +64,7 @@ open http://localhost:8080
 | GET | `/api/health` | Health check | - |
 | GET | `/api/stats` | Estadísticas | 10/min |
 
-## 🔧 Configuración
+## Configuración
 
 ### Variables de Entorno
 ```bash
@@ -131,10 +121,6 @@ curl -X POST http://localhost:8080/api/orders \
     "items": [{"name": "Producto A", "quantity": 2}],
     "total_amount": 29.99
   }'
-
-# Listar pedidos con paginación
-curl -X GET "http://localhost:8080/api/orders?page=1&per_page=10" \
-  -H "Authorization: Bearer $TOKEN"
 
 # Consultar pedido específico
 curl -X GET http://localhost:8080/api/orders/ORD-000001 \
@@ -234,62 +220,13 @@ curl -H "Authorization: Bearer $TOKEN" \
   http://localhost:8080/api/stats | jq .
 ```
 
-## 🐳 Configuración de Docker
+## Configuración de Docker
 
 ### Servicios
 1. **nginx**: Load Balancer (puerto 8080)
 2. **api-1, api-2, api-3**: Instancias de la API
 3. **redis**: Cache y rate limiting
 
-### Comandos Útiles
-```bash
-# Ver estado de contenedores
-docker compose ps
-
-# Ver logs en tiempo real
-docker compose logs -f
-
-# Escalar instancias
-docker compose up -d --scale api=5
-
-# Parar servicios
-docker compose down
-
-# Reiniciar con rebuild
-docker compose up -d --build
-```
-
-## Testing y Demostración
-
-### Demo Automática
-```bash
-./scripts/demo.sh
-```
-La demo ejecuta:
-- Verificación de health checks
-- Registro y autenticación de usuarios  
-- CRUD completo de pedidos
-- Activación de rate limiting
-- Verificación de replicación
-- Pruebas de manejo de errores
-
-### Ejemplos Manuales
-```bash
-# Ver todos los ejemplos disponibles
-./examples.sh
-```
-
-### Simulación de Fallos
-```bash
-# Parar una instancia para probar failover
-docker stop orders-api-1
-
-# Hacer requests - NGINX reroutea automáticamente
-curl http://localhost:8080/api/health
-
-# Reiniciar instancia
-docker start orders-api-1
-```
 
 ## Estructura del Proyecto
 
@@ -305,61 +242,4 @@ ANDISII_TFU_UT2/
 │   ├── start.sh          # Script de inicio del sistema
 │   └── demo.sh           # Demostración interactiva
 └── README.md            # Esta documentación
-```
-
-## 🔧 Troubleshooting
-
-### Problemas Comunes
-
-#### Puerto ocupado
-```bash
-# Verificar procesos usando el puerto
-lsof -i :8080
-sudo netstat -tulpn | grep :8080
-
-# Cambiar puerto en docker-compose.yml si es necesario
-```
-
-#### Contenedores no inician
-```bash
-# Ver logs detallados
-docker-compose logs
-
-# Reconstruir imágenes
-docker-compose build --no-cache
-
-# Verificar recursos del sistema
-docker system df
-```
-
-#### Redis no conecta
-```bash
-# Verificar estado de Redis
-docker-compose exec redis redis-cli ping
-
-# Reiniciar servicio Redis
-docker-compose restart redis
-```
-
-#### Rate limiting no funciona
-```bash
-# Verificar conexión Redis
-curl http://localhost:8080/api/health | jq .services.redis
-
-# Ver logs de la aplicación
-docker-compose logs api-1
-```
-
-### Logs y Debugging
-```bash
-# Logs de todos los servicios
-docker-compose logs -f
-
-# Logs de un servicio específico
-docker-compose logs -f nginx
-docker-compose logs -f api-1
-
-# Ejecutar comandos dentro de contenedores
-docker-compose exec api-1 bash
-docker-compose exec redis redis-cli
 ```
