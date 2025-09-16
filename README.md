@@ -19,6 +19,8 @@ Sistema completo de gestión de pedidos con alta disponibilidad, autenticación 
 - **Contenedores**: Docker + Docker Compose
 - **Persistencia**: Redis (rate limiting) + In-memory (datos)
 
+> **Nota:** No existe frontend informativo. El sistema expone únicamente la API REST. Para consultar endpoints y estado, utilice `/api/` y `/api/health`.
+
 ## Inicio Rápido
 
 ### Prerequisitos
@@ -27,9 +29,10 @@ Sistema completo de gestión de pedidos con alta disponibilidad, autenticación 
 
 ### 1. Iniciar el Sistema
 ```bash
+
 # Clonar y acceder al directorio
-git clone <repository_url>
-cd ANDISII_TFU_UT2
+git clone https://github.com/LuciaOliveraa/ut2-tfu-andis-ii.git
+cd ut2-tfu-andis-ii
 
 # Iniciar todos los servicios
 ./scripts/start.sh
@@ -146,13 +149,6 @@ Internet → NGINX Load Balancer → [API-1, API-2, API-3] → Redis
 - **Reintentos**: 3 intentos con timeout de 10s
 - **Failover**: Automático ante fallos de instancia
 
-### Verificar Distribución de Carga
-```bash
-# Ver qué instancia maneja cada request
-for i in {1..5}; do
-  curl -I http://localhost:8080/api/health | grep -i "x-upstream-server"
-done
-```
 
 ## Mecanismos de Reintentos
 
@@ -231,15 +227,14 @@ curl -H "Authorization: Bearer $TOKEN" \
 ## Estructura del Proyecto
 
 ```
-ANDISII_TFU_UT2/
+ut2-tfu-andis-ii/
 ├── app.py                 # Aplicación Flask principal
 ├── requirements.txt       # Dependencias Python
-├── Dockerfile            # Imagen de la aplicación  
-├── docker-compose.yml    # Orquestación de servicios
-├── nginx.conf            # Configuración del load balancer
-├── examples.sh           # Ejemplos de curl completos
+├── Dockerfile             # Imagen de la aplicación  
+├── docker-compose.yml     # Orquestación de servicios
+├── nginx.conf             # Configuración del load balancer
 ├── scripts/
-│   ├── start.sh          # Script de inicio del sistema
-│   └── demo.sh           # Demostración interactiva
-└── README.md            # Esta documentación
+│   ├── start.sh           # Script de inicio del sistema
+│   └── demo.sh            # Demostración interactiva
+└── README.md              # Esta documentación
 ```

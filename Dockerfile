@@ -1,8 +1,6 @@
 # Dockerfile para la API Flask de pedidos en línea
 FROM python:3.11-slim
 
-# Información del mantenedor
-LABEL maintainer="orders-api@example.com"
 LABEL description="Flask REST API para gestión de pedidos con autenticación y rate limiting"
 
 # Configurar variables de entorno
