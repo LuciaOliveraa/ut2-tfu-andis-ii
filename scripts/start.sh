@@ -150,7 +150,6 @@ show_system_info() {
     echo -e "${BLUE}=== INFORMACIÓN DEL SISTEMA ===${NC}"
     echo -e "📊 Load Balancer:    http://localhost:8080"
     echo -e "🔍 Health Check:     http://localhost:8080/api/health"
-    echo -e "📈 Monitoreo:        http://localhost:8081"
     echo
     echo -e "${BLUE}=== SERVICIOS ACTIVOS ===${NC}"
     docker compose ps
@@ -163,9 +162,6 @@ show_system_info() {
     echo -e "GET  /api/orders/{id} - Consultar pedido"
     echo -e "PUT  /api/orders/{id} - Actualizar pedido"
     echo -e "GET  /api/stats       - Estadísticas del sistema"
-    echo
-    echo -e "${BLUE}=== EJEMPLO DE USO ===${NC}"
-    echo "Ver scripts/demo.sh para ejemplos completos"
     echo
     echo -e "${GREEN}El sistema está listo para usar! 🚀${NC}"
 }
