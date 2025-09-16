@@ -48,7 +48,7 @@ limiter = Limiter(
     app=app,
     key_func=lambda: get_remote_address(),
     storage_uri=app.config['REDIS_URL'] if redis_client else "memory://",
-    default_limits=["200 per day", "50 per hour"]
+    default_limits=["200 per day", "40 per hour"]
 )
 
 # Almacenamiento en memoria (en producción usar base de datos)
@@ -239,7 +239,7 @@ def create_order():
 
 @app.route('/api/orders', methods=['GET'])
 @jwt_required()
-@limiter.limit("100 per minute")
+@limiter.limit("30 per minute")
 @retry_on_failure(max_retries=3)
 def list_orders():
     """

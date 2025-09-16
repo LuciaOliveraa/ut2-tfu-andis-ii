@@ -104,7 +104,7 @@ start_services() {
     docker compose up -d
     
     log "Esperando que los servicios estén listos..."
-    sleep 10
+    sleep 1
     
     # Verificar que los servicios estén ejecutándose
     if ! docker compose ps | grep -q "Up"; then
@@ -150,7 +150,6 @@ show_system_info() {
     echo -e "${BLUE}=== INFORMACIÓN DEL SISTEMA ===${NC}"
     echo -e "📊 Load Balancer:    http://localhost:8080"
     echo -e "🔍 Health Check:     http://localhost:8080/api/health"
-    echo -e "📈 Monitoreo:        http://localhost:8081"
     echo
     echo -e "${BLUE}=== SERVICIOS ACTIVOS ===${NC}"
     docker compose ps
@@ -164,9 +163,6 @@ show_system_info() {
     echo -e "PUT  /api/orders/{id} - Actualizar pedido"
     echo -e "GET  /api/stats       - Estadísticas del sistema"
     echo
-    echo -e "${BLUE}=== EJEMPLO DE USO ===${NC}"
-    echo "Ver scripts/demo.sh para ejemplos completos"
-    echo
     echo -e "${GREEN}El sistema está listo para usar! 🚀${NC}"
 }
 
@@ -175,8 +171,8 @@ main() {
     echo -e "${BLUE}"
     echo "╔══════════════════════════════════════════════╗"
     echo "║          🛒 ORDERS API STARTUP               ║"
-    echo "║      Sistema de Pedidos con Alta            ║"
-    echo "║      Disponibilidad y Replicación           ║"
+    echo "║      Sistema de Pedidos con Alta             ║"
+    echo "║      Disponibilidad y Replicación            ║"
     echo "╚══════════════════════════════════════════════╝"
     echo -e "${NC}"
     
